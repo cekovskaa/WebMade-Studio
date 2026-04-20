@@ -1,0 +1,91 @@
+.section {
+  padding: 1rem 0 5rem;
+}
+
+.block {
+  padding: 2rem 0;
+}
+
+.imageWrap {
+  border: none;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background: #fff;
+}
+
+.title {
+  font-size: clamp(1.5rem, 2.8vw, 2.1rem);
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.text {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+}
+
+.quoteCard {
+  border-left: 4px solid #0d6efd;
+  padding: 1rem 1.25rem;
+  background: #f8faff;
+  border-radius: 0.75rem;
+}
+
+.quote {
+  margin-bottom: 0.8rem;
+  color: #334155;
+}
+
+.author {
+  margin: 0;
+  color: #111827;
+  font-weight: 600;
+}
+
+.role {
+  margin: 0;
+  color: #64748b;
+}
+
+@media (max-width: 425px) {
+  .section {
+    padding: 0.35rem 0 3rem;
+  }
+
+  .block {
+    padding: 1.35rem 0;
+  }
+
+  .title {
+    font-size: 1.35rem;
+  }
+
+  .text {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .section {
+    padding: 0.25rem 0 2.75rem;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .text {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .title {
+    font-size: 1.15rem;
+  }
+
+  .text {
+    font-size: 0.8rem;
+  }
+}

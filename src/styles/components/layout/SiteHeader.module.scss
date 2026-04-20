@@ -1,0 +1,300 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.navInner {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 3.5rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.logo {
+  display: block;
+  height: 50px;
+  width: auto;
+  max-width: min(240px, 58vw);
+  object-fit: contain;
+}
+
+/* Desktop nav — hidden below lg */
+.desktopNav {
+  display: none;
+}
+
+.desktopList {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem 1.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.desktopList li {
+  margin: 0;
+}
+
+.navLink {
+  color: #1f2937;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  padding: 0.35rem 0.25rem;
+  transition: color 0.2s ease;
+}
+
+.navLink:hover {
+  color: #0d6efd;
+}
+
+/* Hamburger — mobile only */
+.menuToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: none;
+  margin: 0;
+  padding: 0.3rem 0.35rem;
+  background: transparent;
+  color: #111827;
+  font-size: 1.05rem;
+  line-height: 1;
+  cursor: pointer;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.menuToggle:focus,
+.menuToggle:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.menuToggle::-moz-focus-inner {
+  border: 0;
+}
+
+@media (min-width: 992px) {
+  .desktopNav {
+    display: block;
+  }
+
+  .menuToggle {
+    display: none;
+  }
+}
+
+@media (max-width: 575px) {
+  .logo {
+    height: 42px;
+    max-width: min(200px, 52vw);
+  }
+}
+
+/* —— Mobile menu: top sheet (not full viewport); portal to body —— */
+.overlayBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  overflow: hidden;
+  /* Light scrim fades in with motion opacity so the slide reads clearly */
+  background: rgba(15, 23, 42, 0.16);
+}
+
+.overlayPanel {
+  width: 100%;
+  background: #ffffff;
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.14);
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+  max-height: 90vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.overlayInner {
+  display: flex;
+  flex-direction: column;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: 0.65rem;
+}
+
+@media (min-width: 992px) {
+  .overlayBackdrop {
+    display: none !important;
+  }
+}
+
+.overlayTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0;
+  /* Same row height as .bar so logo does not shift when opening the menu */
+  min-height: 3.5rem;
+}
+
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: none;
+  margin: 0;
+  /* Match .menuToggle so X and hamburger share the same box */
+  padding: 0.3rem 0.35rem;
+  background: transparent;
+  color: #111827;
+  font-size: 1.05rem;
+  line-height: 1;
+  cursor: pointer;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.iconBtn:focus,
+.iconBtn:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.iconBtn::-moz-focus-inner {
+  border: 0;
+}
+
+.overlayBrand {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.overlayLogo {
+  display: block;
+  height: 50px;
+  width: auto;
+  max-width: min(240px, 58vw);
+  object-fit: contain;
+}
+
+.overlayDivider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 0;
+}
+
+.overlayNav {
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 0.35rem;
+  min-height: 0;
+}
+
+.overlayList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.overlayItem {
+  border-bottom: 1px solid #eeeeee;
+  text-align: center;
+}
+
+.overlayItem:last-child {
+  border-bottom: none;
+}
+
+.overlayLink {
+  display: block;
+  padding: 1rem 0.25rem;
+  color: #111827;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.overlayLink:hover,
+.overlayLink:active {
+  color: #4f46e5;
+}
+
+/* Narrow phones: 320px–425px */
+@media (max-width: 425px) {
+  .menuToggle {
+    font-size: 0.95rem;
+    padding: 0.25rem 0.3rem;
+  }
+
+  .logo {
+    height: 38px;
+    max-width: min(180px, 62vw);
+  }
+
+  .overlayInner {
+    padding-bottom: 0.55rem;
+  }
+
+  .iconBtn {
+    font-size: 0.95rem;
+    padding: 0.25rem 0.3rem;
+  }
+
+  .overlayLogo {
+    height: 38px;
+    max-width: min(180px, 62vw);
+  }
+
+  .overlayLink {
+    font-size: 0.82rem;
+    padding: 0.85rem 0.15rem;
+    letter-spacing: 0.06em;
+  }
+}
+
+@media (max-width: 360px) {
+  .overlayLink {
+    font-size: 0.78rem;
+    padding: 0.75rem 0.1rem;
+  }
+
+  .menuToggle,
+  .iconBtn {
+    font-size: 0.9rem;
+  }
+}
