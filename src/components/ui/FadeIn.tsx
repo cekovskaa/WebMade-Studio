@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 
 type FadeInProps = {
@@ -10,13 +10,32 @@ type FadeInProps = {
   className?: string;
 };
 
-export function FadeIn({ children, delay = 0, y = 24, className }: FadeInProps) {
+/**
+ * Scroll-in fade. Viewport settings are relaxed for iOS Safari, where stricter
+ * IntersectionObserver thresholds often never fire and content stays at opacity: 0.
+ */
+export function FadeIn({
+  children,
+  delay = 0,
+  y = 24,
+  className,
+}: FadeInProps) {
+  const prefersReducedMotion = useReducedMotion();
+
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>;
+  }
+
   return (
     <motion.div
       className={className}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, amount: 0.25 }}
+      viewport={{
+        once: true,
+        amount: "some",
+        margin: "0px 0px -12% 0px",
+      }}
       transition={{ duration: 0.6, ease: "easeOut", delay }}
     >
       {children}

@@ -11,11 +11,20 @@ export function HighlightsSection() {
     <section className={styles.section} aria-label="Feature highlights">
       <div className="container">
         {highlights.map((item, index) => (
-          <div className={`row align-items-center g-5 ${styles.block}`} key={item.author}>
+          <div
+            className={`row align-items-center g-5 ${styles.block}`}
+            key={item.author}
+          >
             <div className={`col-lg-7 ${item.reverse ? "order-lg-2" : ""}`}>
               <FadeIn delay={0.05 * index}>
                 <div className={styles.imageWrap}>
-                  <Image src={item.imageSrc} alt={item.title} width={800} height={600} className="img-fluid" />
+                  <Image
+                    src={item.imageSrc}
+                    alt={item.title}
+                    width={800}
+                    height={600}
+                    className="img-fluid"
+                  />
                 </div>
               </FadeIn>
             </div>
@@ -27,7 +36,11 @@ export function HighlightsSection() {
                   className={styles.quoteCard}
                   initial={{ opacity: 0, x: item.reverse ? -90 : 90 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: false, amount: 0.4 }}
+                  viewport={{
+                    once: true,
+                    amount: "some",
+                    margin: "0px 0px -12% 0px",
+                  }}
                   transition={{ duration: 0.65, ease: "easeOut", delay: 0.1 }}
                 >
                   <p className={styles.quote}>&ldquo;{item.quote}&rdquo;</p>
