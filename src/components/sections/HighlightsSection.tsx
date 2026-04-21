@@ -37,7 +37,7 @@ export function HighlightsSection() {
                   initial={{ opacity: 0, x: item.reverse ? -90 : 90 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{
-                    once: true,
+                    once: false,
                     amount: "some",
                     margin: "0px 0px -12% 0px",
                   }}

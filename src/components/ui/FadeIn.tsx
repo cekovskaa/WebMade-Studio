@@ -13,6 +13,7 @@ type FadeInProps = {
 /**
  * Scroll-in fade. Viewport settings are relaxed for iOS Safari, where stricter
  * IntersectionObserver thresholds often never fire and content stays at opacity: 0.
+ * `once: false` keeps the reveal responsive in both scroll directions.
  */
 export function FadeIn({
   children,
@@ -32,7 +33,7 @@ export function FadeIn({
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{
-        once: true,
+        once: false,
         amount: "some",
         margin: "0px 0px -12% 0px",
       }}
