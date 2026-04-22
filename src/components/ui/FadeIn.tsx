@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import type { ReactNode } from "react";
-import styles from "../../styles/components/ui/RevealAnimations.module.scss";
+import { useEffect, useRef, useState } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 type FadeInProps = {
   children: ReactNode;
@@ -23,7 +22,8 @@ export function FadeIn({
   className,
 }: FadeInProps) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const playedRef = useRef(false);
+  const [isReady, setIsReady] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     const node = ref.current;
@@ -37,15 +37,19 @@ export function FadeIn({
       return;
     }
 
-    node.style.setProperty("--reveal-y", `${y}px`);
-    node.style.setProperty("--reveal-delay", `${delay}s`);
+    const inInitialView = () => {
+      const rect = node.getBoundingClientRect();
+      const viewportHeight =
+        window.innerHeight || document.documentElement.clientHeight;
+      return rect.top < viewportHeight * 0.9 && rect.bottom > viewportHeight * 0.1;
+    };
+
+    setIsVisible(inInitialView());
+    setIsReady(true);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !playedRef.current) {
-          playedRef.current = true;
-          node.classList.add(styles.playY);
-        }
+        setIsVisible(entry.isIntersecting);
       },
       {
         root: null,
@@ -59,8 +63,17 @@ export function FadeIn({
     return () => observer.disconnect();
   }, [delay, y]);
 
+  const style: CSSProperties | undefined = isReady
+    ? {
+        opacity: isVisible ? 1 : 0,
+        transform: `translateY(${isVisible ? 0 : y}px)`,
+        transition: `opacity 0.6s ease ${delay}s, transform 0.6s ease ${delay}s`,
+        willChange: "opacity, transform",
+      }
+    : undefined;
+
   return (
-    <div ref={ref} className={`${styles.revealY} ${className ?? ""}`}>
+    <div ref={ref} className={className} style={style}>
       {children}
     </div>
   );
