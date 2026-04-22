@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { highlights } from "@/data/content";
 import { FadeIn } from "@/components/ui/FadeIn";
 import styles from "../../styles/components/sections/HighlightsSection.module.scss";
@@ -32,20 +31,11 @@ export function HighlightsSection() {
               <FadeIn delay={0.08 * index}>
                 <h3 className={styles.title}>{item.title}</h3>
                 <p className={styles.text}>{item.description}</p>
-                <motion.div
-                  className={styles.quoteCard}
-                  initial={{ opacity: 0, x: item.reverse ? -90 : 90 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{
-                    once: false,
-                    amount: 0.2,
-                  }}
-                  transition={{ duration: 0.65, ease: "easeOut", delay: 0.1 }}
-                >
+                <div className={styles.quoteCard}>
                   <p className={styles.quote}>&ldquo;{item.quote}&rdquo;</p>
                   <p className={styles.author}>{item.author}</p>
                   <p className={styles.role}>{item.role}</p>
-                </motion.div>
+                </div>
               </FadeIn>
             </div>
           </div>

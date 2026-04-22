@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
 type FadeInProps = {
@@ -11,9 +12,9 @@ type FadeInProps = {
 };
 
 /**
- * Scroll-in fade. Viewport settings are relaxed for iOS Safari, where stricter
- * IntersectionObserver thresholds often never fire and content stays at opacity: 0.
- * `once: false` keeps the reveal responsive in both scroll directions.
+ * Scroll-in fade with a manual IntersectionObserver.
+ * Some desktop/browser combinations can miss Framer's `whileInView` updates and
+ * leave content at opacity: 0, so we control visibility state ourselves.
  */
 export function FadeIn({
   children,
@@ -22,20 +23,55 @@ export function FadeIn({
   className,
 }: FadeInProps) {
   const prefersReducedMotion = useReducedMotion();
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [isInView, setIsInView] = useState(false);
 
   if (prefersReducedMotion) {
     return <div className={className}>{children}</div>;
   }
 
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
+    if (typeof IntersectionObserver === "undefined") {
+      setIsInView(true);
+      return;
+    }
+
+    let sawObserverEvent = false;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        sawObserverEvent = true;
+        setIsInView(entry.isIntersecting);
+      },
+      {
+        root: null,
+        rootMargin: "0px 0px -10% 0px",
+        threshold: 0.15,
+      },
+    );
+
+    observer.observe(node);
+
+    // Fallback so content never stays hidden if the observer fails to fire.
+    const fallbackTimer = window.setTimeout(() => {
+      if (!sawObserverEvent) setIsInView(true);
+    }, 1200);
+
+    return () => {
+      window.clearTimeout(fallbackTimer);
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <motion.div
+      ref={ref}
       className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{
-        once: false,
-        amount: 0.2,
-      }}
+      initial={false}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y }}
       transition={{ duration: 0.6, ease: "easeOut", delay }}
     >
       {children}
