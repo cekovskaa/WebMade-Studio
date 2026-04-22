@@ -34,8 +34,7 @@ export function FadeIn({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{
         once: false,
-        amount: "some",
-        margin: "0px 0px -12% 0px",
+        amount: 0.2,
       }}
       transition={{ duration: 0.6, ease: "easeOut", delay }}
     >

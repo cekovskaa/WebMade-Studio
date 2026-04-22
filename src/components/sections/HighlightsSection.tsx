@@ -38,8 +38,7 @@ export function HighlightsSection() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{
                     once: false,
-                    amount: "some",
-                    margin: "0px 0px -12% 0px",
+                    amount: 0.2,
                   }}
                   transition={{ duration: 0.65, ease: "easeOut", delay: 0.1 }}
                 >
