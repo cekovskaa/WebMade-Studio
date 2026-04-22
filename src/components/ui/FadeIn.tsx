@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
 type FadeInProps = {
@@ -12,9 +11,9 @@ type FadeInProps = {
 };
 
 /**
- * Scroll-in fade with a manual IntersectionObserver.
- * Some desktop/browser combinations can miss Framer's `whileInView` updates and
- * leave content at opacity: 0, so we control visibility state ourselves.
+ * Reliable fade-in on mount.
+ * Avoids viewport-dependent hidden states that can leave content invisible on
+ * some desktop/browser combinations.
  */
 export function FadeIn({
   children,
@@ -23,55 +22,16 @@ export function FadeIn({
   className,
 }: FadeInProps) {
   const prefersReducedMotion = useReducedMotion();
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [isInView, setIsInView] = useState(false);
 
   if (prefersReducedMotion) {
     return <div className={className}>{children}</div>;
   }
 
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-
-    if (typeof IntersectionObserver === "undefined") {
-      setIsInView(true);
-      return;
-    }
-
-    let sawObserverEvent = false;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        sawObserverEvent = true;
-        setIsInView(entry.isIntersecting);
-      },
-      {
-        root: null,
-        rootMargin: "0px 0px -10% 0px",
-        threshold: 0.15,
-      },
-    );
-
-    observer.observe(node);
-
-    // Fallback so content never stays hidden if the observer fails to fire.
-    const fallbackTimer = window.setTimeout(() => {
-      if (!sawObserverEvent) setIsInView(true);
-    }, 1200);
-
-    return () => {
-      window.clearTimeout(fallbackTimer);
-      observer.disconnect();
-    };
-  }, []);
-
   return (
     <motion.div
-      ref={ref}
       className={className}
-      initial={false}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y }}
+      initial={{ opacity: 0, y }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut", delay }}
     >
       {children}
