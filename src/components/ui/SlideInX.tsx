@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
+import styles from "../../styles/components/ui/RevealAnimations.module.scss";
 
 type SlideInXProps = {
   children: ReactNode;
@@ -23,9 +24,7 @@ export function SlideInX({
   className,
 }: SlideInXProps) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const animatedRef = useRef(false);
-  const rafA = useRef<number | null>(null);
-  const rafB = useRef<number | null>(null);
+  const playedRef = useRef(false);
 
   useEffect(() => {
     const node = ref.current;
@@ -37,26 +36,15 @@ export function SlideInX({
 
     const sign = from === "left" ? -1 : 1;
     const startX = sign * distance;
-
-    const runAnimation = () => {
-      if (animatedRef.current) return;
-      animatedRef.current = true;
-
-      node.style.transition = "none";
-      node.style.transform = `translateX(${startX}px)`;
-      void node.offsetHeight;
-
-      rafA.current = window.requestAnimationFrame(() => {
-        rafB.current = window.requestAnimationFrame(() => {
-          node.style.transition = `transform 620ms cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`;
-          node.style.transform = "translateX(0)";
-        });
-      });
-    };
+    node.style.setProperty("--reveal-x", `${startX}px`);
+    node.style.setProperty("--reveal-delay", `${delay}s`);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) runAnimation();
+        if (entry.isIntersecting && !playedRef.current) {
+          playedRef.current = true;
+          node.classList.add(styles.playX);
+        }
       },
       {
         root: null,
@@ -69,13 +57,11 @@ export function SlideInX({
 
     return () => {
       observer.disconnect();
-      if (rafA.current !== null) window.cancelAnimationFrame(rafA.current);
-      if (rafB.current !== null) window.cancelAnimationFrame(rafB.current);
     };
   }, [delay, distance, from]);
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} className={`${styles.revealX} ${className ?? ""}`}>
       {children}
     </div>
   );
