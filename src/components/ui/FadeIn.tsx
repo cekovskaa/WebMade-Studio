@@ -30,7 +30,6 @@ export function FadeIn({
     if (!node) return;
 
     if (typeof window === "undefined") return;
-
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (media.matches) return;
 
@@ -62,7 +61,7 @@ export function FadeIn({
     observer.observe(node);
 
     return () => observer.disconnect();
-  }, []);
+  }, [delay, y]);
 
   const style: CSSProperties | undefined = isReady
     ? {
